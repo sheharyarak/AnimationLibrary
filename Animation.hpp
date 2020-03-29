@@ -83,5 +83,7 @@ static		Animation start(std::string path, int fc, Canvas c);
 void		initialize_frames();
 void		create_frames_threaded();
 void		create_frames_in_order();
+//~ static	void	render();
 };
+void	render(int i, Canvas canvas, std::vector<Magick::Image*> *frames);
 #endif
