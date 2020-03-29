@@ -49,3 +49,7 @@ void	Sprite::set_v(double v)
 {
 	this->v = v;
 }
+void	Sprite::change_direction()
+{
+	this->v *= -1;
+}

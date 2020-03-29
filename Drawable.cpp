@@ -88,3 +88,4 @@ void	Drawable::set_theta(double y, double x)
 {
 	this->theta = std::atan2(y, x)*(180/PI);
 }
+void	Drawable::change_direction(){}

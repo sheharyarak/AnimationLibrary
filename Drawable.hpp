@@ -36,6 +36,13 @@ public:
 	void	set_height(double h);
 	void	set_width(double w);
 	void	set_image(Magick::Image image);
+virtual	void	change_direction();
+virtual	void	move_up(){}
+virtual	void	move_down(){}
+virtual	void	move_right(){}
+virtual	void	move_left(){}
+virtual	void	move(){}
+virtual	void	move_arc(){}
 };
 
 #endif

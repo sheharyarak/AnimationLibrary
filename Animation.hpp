@@ -7,6 +7,7 @@
 #include <future>
 #include <mutex>
 #include <list>
+#include <deque>
 
 
 class	Animation
@@ -15,7 +16,7 @@ private:
 std::vector<Drawable*>					objects;
 std::vector<Magick::Image*>*			frames;
 std::mutex								mutex;
-std::vector<std::shared_future<void>>	futures;
+std::deque<std::shared_future<void>>	futures;
 int										frame_cnt;
 int										curr_frame = 0;
 Canvas									canvas;
@@ -34,9 +35,9 @@ void									set_frames
 void									set_objects
 										(std::vector<Drawable*> &objs);
 std::vector<Drawable*>&					get_objects();
-std::vector<std::shared_future<void>>&	get_futures();
+std::deque<std::shared_future<void>>&	get_futures();
 void									set_futures
-										(std::vector<std::shared_future<void>> &futures);
+										(std::deque<std::shared_future<void>> &futures);
 void									set_canvas(Canvas c);
 Canvas									get_canvas();
 void									set_path(std::string p);
@@ -65,5 +66,6 @@ void		create_frames();
 void		to_string();
 };
 void	render_frame(int i, Canvas canvas, std::vector<Magick::Image*> *frames);
-void	render_objects(Magick::Image *image, std::list<Magick::Drawable> drawables);
+void	render_objects(Magick::Image *image, std::list<Magick::Drawable> drawables, std::deque<std::shared_future<void>> *futures, int index, std::mutex *mutex);
+
 #endif

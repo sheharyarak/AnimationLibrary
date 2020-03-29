@@ -12,12 +12,13 @@ public:
 	Sprite(double x_, double y_, double v_, const Magick::Image &image_);
 	double	get_v() const;
 	void	set_v(double v);
-	void	move_up();
-	void	move_down();
-	void	move_right();
-	void	move_left();
-	void	move();
-	void	move_arc();
+virtual	void	move_up();
+virtual	void	move_down();
+virtual	void	move_right();
+virtual	void	move_left();
+virtual	void	move();
+virtual	void	move_arc();
+virtual	void	change_direction();
 };
 
 #endif

@@ -1,5 +1,5 @@
 #include "Animation.hpp"
-
+#include "Timer.h"
 Animation::Animation()
 {
 
@@ -35,7 +35,7 @@ std::vector<Drawable*>&		Animation::get_objects()
 {
 	return objects;
 }
-std::vector<std::shared_future<void>>&	Animation::get_futures()
+std::deque<std::shared_future<void>>&	Animation::get_futures()
 {
 	return futures;
 }
@@ -61,36 +61,59 @@ void	Animation::add_frame()
 
 	if(threaded == true)
 	{
-		futures[curr_frame].get();
 		std::list<Magick::Drawable> drawables;
-		for(int i = 0; i < objects.size(); i++)
+		for(unsigned int i = 0; i < objects.size(); i++)
 		{
 			drawables.push_back(*(objects[i]));
 		}
-		futures.push_back(std::shared_future<void>(std::async(std::launch::async, render_objects, (*frames)[curr_frame], drawables)));
+		mutex.lock();
+		futures.push_back(std::shared_future<void>(std::async(std::launch::async, render_objects, (*frames)[curr_frame], drawables, &futures, curr_frame, &mutex)));
+		mutex.unlock();
 	}
 	else
 	{
-		for(int i = 0; i < objects.size(); i++)
+		for(unsigned int i = 0; i < objects.size(); i++)
 		{
 			((*frames)[curr_frame])->draw(*(objects[i]));
+			std::cout << "." << std::flush;
 		}
 	}
 	curr_frame++;
 }
-void	render_objects(Magick::Image *image, std::list<Magick::Drawable> drawables)
+void	render_objects(Magick::Image *image, std::list<Magick::Drawable> drawables, std::deque<std::shared_future<void>> *futures, int curr_frame, std::mutex* mutex)
 {
+	(*futures)[curr_frame].get();
+	mutex->lock();
+	futures->erase(futures->begin()+curr_frame);
+	mutex->unlock();
 	image->draw(drawables);
+	std::cout << "." << std::flush;
 }
 void	Animation::animate()
 {
+	Timer t("in animate");
 	ready();
 	writeImages(frames->begin(), frames->end(), path.c_str());
 }
 void	Animation::ready()
 {
-	for(auto future: futures)
-		future.get();
+	Timer t("in ready");
+	if(threaded == true)
+	{
+		int i = 0;
+		while(futures.size() > 0)
+		{
+			std::cout <<"checking " << i << "th future / "<<futures.size()<<" futures." << std::endl;
+			futures.front().get();
+			{
+				std::lock_guard<std::mutex> lock(mutex);
+				futures.pop_front();
+			}
+			i++;
+		}
+	}
+	else
+		return;
 }
 void	Animation::initialize_frames()
 {
@@ -122,7 +145,7 @@ int						Animation::get_frame_cnt()
 }
 void	Animation::create_frames_threaded()
 {
-	for(int i = 0; i < frames->size(); i++)
+	for(unsigned int i = 0; i < frames->size(); i++)
 		futures.push_back(std::shared_future<void>(std::async(std::launch::async, render_frame, i, canvas, frames)));
 }
 void	render_frame(int i, Canvas canvas, std::vector<Magick::Image*> *frames)
@@ -131,7 +154,7 @@ void	render_frame(int i, Canvas canvas, std::vector<Magick::Image*> *frames)
 }
 void	Animation::create_frames_in_order()
 {
-	for(int i = 0; i < frames->size(); i++)
+	for(unsigned int i = 0; i < frames->size(); i++)
 	{
 		(*frames)[i] = new Magick::Image(canvas.get_dimensions(), canvas.get_color());
 	}
