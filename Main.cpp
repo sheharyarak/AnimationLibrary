@@ -12,6 +12,7 @@ int main (int argc, char *argv[])
 		<< "Usage: ./program width height color out_path" << std::endl;
 		return 0;
 	}
+	//only compatible with linux for now
 	Magick::InitializeMagick(nullptr);
 
 	int width = std::stoi(argv[1]);
