@@ -4,8 +4,11 @@ Sprite::Sprite()
 {
 	v = 0;
 }
-Sprite::Sprite(double x_, double y_, double v_, const Image &image_) : Drawable(x_, y_, Image)
+Sprite::Sprite(double x_, double y_, double v_, const Magick::Image &image_)
 {
+	x(x_);
+	y(y_);
+	image(image_);
 
 }
 void	Sprite::move_up()

@@ -7,7 +7,7 @@
 const double PI = 3.14159265358979;
 class Drawable : public Magick::DrawableCompositeImage
 {
-private:
+protected:
 	/* data */
 	double	pivot_x = 0;
 	double	pivot_y = 0;
@@ -15,7 +15,7 @@ private:
 	double	theta = 0;
 public:
 	Drawable();
-	Drawable(double x_, double y_, const Image &image_);
+	Drawable(double x_, double y_, const Magick::Image &image_);
 	void	prepare_arc(int x, int y, double r);
 	double	get_pivot_x() const;
 	double	get_pivot_y() const;

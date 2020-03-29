@@ -2,7 +2,7 @@
 
 Canvas::Canvas()
 {
-	bg = Magick::Image("100x100", "white"); 
+	bg = Magick::Image("100x100", "white");
 	this->dimensions = "100x100";
 	this->color = "white";
 }
@@ -24,15 +24,15 @@ Magick::Image	Canvas::get_background() const
 {
 	return bg;
 }
-void	Canvas::set_background(Magick::Background background)
+void	Canvas::set_background(Magick::Image background)
 {
 	bg = background;
 }
-std::string	get_dimensions() const
+std::string	Canvas::get_dimensions() const
 {
 	return dimensions;
 }
-std::string	get_color() const
+std::string	Canvas::get_color() const
 {
 	return color;
 }

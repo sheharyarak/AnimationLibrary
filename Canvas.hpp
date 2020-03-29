@@ -19,7 +19,7 @@ public:
 	int		get_width() const;
 	int		get_height() const;
 	Magick::Image	get_background() const;
-	void	set_background(Magick::Background);
+	void	set_background(Magick::Image);
 };
 
 #endif

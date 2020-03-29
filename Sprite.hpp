@@ -9,7 +9,7 @@ private:
 	double v;
 public:
 	Sprite();
-	Sprite(double x_, double y_, double v_, const Image &image_);
+	Sprite(double x_, double y_, double v_, const Magick::Image &image_);
 	double	get_v() const;
 	void	set_v(double v);
 	void	move_up();

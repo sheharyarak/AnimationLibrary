@@ -5,9 +5,9 @@ Drawable::Drawable(): Magick::DrawableCompositeImage(0, 0, Magick::Image())
 
 }
 
-Drawable::Drawable(double x_, double y_, const Image &image_) : Magick::DrawableCompositeImage (x_, y_, image_)
+Drawable::Drawable(double x_, double y_, const Magick::Image &image_) : Magick::DrawableCompositeImage (x_, y_, image_)
 {
-	
+
 }
 void	Drawable::prepare_arc(int x, int y, double r)
 {
