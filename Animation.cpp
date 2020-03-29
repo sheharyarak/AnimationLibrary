@@ -58,19 +58,29 @@ void	Animation::dec_frames(int fc)
 }
 void	Animation::add_frame()
 {
-	//~ std::vector<Magick::Drawable> drawings;
-	//~ for(int i = 0; i < objects.size(); i++)
-	//~ {
-		//~ drawings.push_back(*(objects[i]));
-	//~ }
-	//~ futures[curr_frame].get();
-	//~ ((*frames)[curr_frame])->draw(drawings);
-	futures[curr_frame].get();
-	for(int i = 0; i < objects.size(); i++)
+
+	if(threaded == true)
 	{
-		((*frames)[curr_frame])->draw(*(objects[i]));
+		futures[curr_frame].get();
+		std::list<Magick::Drawable> drawables;
+		for(int i = 0; i < objects.size(); i++)
+		{
+			drawables.push_back(*(objects[i]));
+		}
+		futures.push_back(std::shared_future<void>(std::async(std::launch::async, render_objects, (*frames)[curr_frame], drawables)));
+	}
+	else
+	{
+		for(int i = 0; i < objects.size(); i++)
+		{
+			((*frames)[curr_frame])->draw(*(objects[i]));
+		}
 	}
 	curr_frame++;
+}
+void	render_objects(Magick::Image *image, std::list<Magick::Drawable> drawables)
+{
+	image->draw(drawables);
 }
 void	Animation::animate()
 {
@@ -113,18 +123,40 @@ int						Animation::get_frame_cnt()
 void	Animation::create_frames_threaded()
 {
 	for(int i = 0; i < frames->size(); i++)
-		futures.push_back(std::shared_future<void>(std::async(std::launch::async, render, i, canvas, frames)));
+		futures.push_back(std::shared_future<void>(std::async(std::launch::async, render_frame, i, canvas, frames)));
 }
-void	render(int i, Canvas canvas, std::vector<Magick::Image*> *frames)
+void	render_frame(int i, Canvas canvas, std::vector<Magick::Image*> *frames)
 {
 	(*frames)[i] = new Magick::Image(canvas.get_dimensions(), canvas.get_color());
 }
 void	Animation::create_frames_in_order()
 {
 	for(int i = 0; i < frames->size(); i++)
+	{
 		(*frames)[i] = new Magick::Image(canvas.get_dimensions(), canvas.get_color());
+	}
 }
 void	Animation::track(Drawable *obj)
 {
 	objects.push_back(obj);
+}
+void	Animation::create_frames()
+{
+	if(threaded == true)
+		create_frames_threaded();
+	else
+		create_frames_in_order();
+}
+void	Animation::set_threaded(bool b)
+{
+	threaded = b;
+}
+void	Animation::to_string()
+{
+	std::cout << "path: " << path << std::endl
+	<< "width: " << canvas.get_width() << std::endl
+	<< "height: " << canvas.get_height() << std::endl
+	<< "frames: " << frame_cnt << std::endl
+	<< "multi-threaded: " << (threaded ? "true" : "false") << std::endl
+	<< "age represents the time it took render_frame empty frames." << std::endl;
 }

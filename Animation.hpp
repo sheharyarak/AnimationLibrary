@@ -6,6 +6,7 @@
 #include <vector>
 #include <future>
 #include <mutex>
+#include <list>
 
 
 class	Animation
@@ -20,7 +21,7 @@ int										curr_frame = 0;
 Canvas									canvas;
 std::string								path;
 static	bool							init;
-bool						threaded = true;
+bool						threaded = false;
 
 public:
 Animation();
@@ -59,7 +60,10 @@ static		Animation start(std::string path, int fc, Canvas c);
 void		initialize_frames();
 void		create_frames_threaded();
 void		create_frames_in_order();
-//~ static	void	render();
+void		set_threaded(bool b);
+void		create_frames();
+void		to_string();
 };
-void	render(int i, Canvas canvas, std::vector<Magick::Image*> *frames);
+void	render_frame(int i, Canvas canvas, std::vector<Magick::Image*> *frames);
+void	render_objects(Magick::Image *image, std::list<Magick::Drawable> drawables);
 #endif

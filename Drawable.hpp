@@ -3,6 +3,7 @@
 
 #include <Magick++.h>
 #include <cmath>
+#include <iostream>
 
 const double PI = 3.14159265358979;
 class Drawable : public Magick::DrawableCompositeImage
@@ -12,11 +13,11 @@ protected:
 	double	pivot_x = 0;
 	double	pivot_y = 0;
 	double	radius = 0;
-	double	theta = 0;
+	double	theta = 0; //degrees
 public:
 	Drawable();
 	Drawable(double x_, double y_, const Magick::Image &image_);
-	void	prepare_arc(int x, int y, double r);
+	void	prepare_arc(int x, int y, double r, double theta = 0);
 	double	get_pivot_x() const;
 	double	get_pivot_y() const;
 	double	get_radius () const;

@@ -17,6 +17,7 @@ public:
 	void	move_right();
 	void	move_left();
 	void	move();
+	void	move_arc();
 };
 
 #endif

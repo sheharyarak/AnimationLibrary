@@ -32,6 +32,20 @@ void	Sprite::move_left()
 }
 void	Sprite::move()
 {
-	x(x()+v*std::sin(theta));
-	y(y()+v*std::cos(theta));
+	x(x()+v*std::sin(theta*(PI/180)));
+	y(y()+v*std::cos(theta*(PI/180)));
+}
+void	Sprite::move_arc()
+{
+	x(pivot_x + radius*std::cos(theta*(PI/180)));
+	y(pivot_y - radius*std::sin(theta*(PI/180)));
+	theta += v;
+}
+double	Sprite::get_v() const
+{
+	return v;
+}
+void	Sprite::set_v(double v)
+{
+	this->v = v;
 }

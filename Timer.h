@@ -17,7 +17,13 @@ struct Timer{
 	{
 		end = std::chrono::high_resolution_clock::now();
 		duration = end - start;
-		std::cout << name << " : " << duration.count() << "s." <<std::endl;
+		std::cout << "[" << name << "]" << " : " << duration.count() << "s." <<std::endl;
+	}
+	void	age()
+	{
+		end = std::chrono::high_resolution_clock::now();
+		duration = end - start;
+		std::cout << "[" << name << " : age]" << " : " << duration.count() << "s." <<std::endl;
 	}
 };
 

@@ -1,5 +1,5 @@
 #include "Drawable.hpp"
-#include <iostream>
+
 Drawable::Drawable(): Magick::DrawableCompositeImage(0, 0, Magick::Image())
 {
 
@@ -9,10 +9,11 @@ Drawable::Drawable(double x_, double y_, const Magick::Image &image_) : Magick::
 {
 
 }
-void	Drawable::prepare_arc(int x, int y, double r)
+void	Drawable::prepare_arc(int x, int y, double r, double theta)
 {
-	pivot_x = x;
-	pivot_y = y;
+	this->theta = theta;
+	pivot_x = this->x()+x;
+	pivot_y = this->y()-y;
 	radius = r;
 }
 double	Drawable::get_pivot_x() const
@@ -77,13 +78,13 @@ double	Drawable::get_theta() const
 }
 void	Drawable::set_theta_rad(double theta)
 {
-	this->theta = theta;
+	this->theta = theta*(180/PI);
 }
 void	Drawable::set_theta_deg(double theta)
 {
-	this->theta = theta*(PI/180);
+	this->theta = theta;
 }
 void	Drawable::set_theta(double y, double x)
 {
-	this->theta = std::atan2(y, x);
+	this->theta = std::atan2(y, x)*(180/PI);
 }
