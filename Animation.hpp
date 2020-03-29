@@ -7,30 +7,6 @@
 #include <future>
 #include <mutex>
 
-//~ class Animation
-//~ {
-//~ private:
-	//~ static	std::vector<Drawable*> objects;
-	//~ static	std::vector<Magick::Image*> *frames;
-	//~ static	std::mutex anim_mutex;
-	//~ static	std::vector<std::shared_future<void>> future_frames;
-	//~ static	Canvas canvas;
-	//~ int	frame_cnt = 0;
-	//~ int index = 0;
-	//~ bool	init = false;
-	//~ std::string path = "animation.gif";
-	//~ void	initialize_frames();
-	//~ static	void	set_frame(int i);
-//~ public:
-	//~ Animation();
-	//~ Animation(std::string path_, int frame_cnt_, Canvas canvas_);
-	//~ void	track(Drawable *obj);
-	//~ void	inc_frames(int fc);
-	//~ void	dec_frames(int fc);
-	//~ void	add_frame();
-	//~ void	animate();
-	//~ void	ready();
-//~ };
 
 class	Animation
 {
@@ -40,7 +16,7 @@ std::vector<Magick::Image*>*			frames;
 std::mutex								mutex;
 std::vector<std::shared_future<void>>	futures;
 int										frame_cnt;
-int										curr_frame;
+int										curr_frame = 0;
 Canvas									canvas;
 std::string								path;
 static	bool							init;

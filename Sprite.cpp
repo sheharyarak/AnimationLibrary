@@ -8,7 +8,10 @@ Sprite::Sprite(double x_, double y_, double v_, const Magick::Image &image_)
 {
 	x(x_);
 	y(y_);
+	v = v_;
 	image(image_);
+	width(image_.columns());
+	height(image_.rows());
 
 }
 void	Sprite::move_up()
