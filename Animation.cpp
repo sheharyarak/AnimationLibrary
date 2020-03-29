@@ -39,10 +39,7 @@ std::vector<std::shared_future<void>>&	Animation::get_futures()
 {
 	return futures;
 }
-void	Animation::track(Drawable *obj)
-{
-	objects.push_back(obj);
-}
+
 void	Animation::inc_frames(int fc)
 {
 	for(int i = 0; i < fc; i++)
@@ -73,6 +70,7 @@ void	Animation::add_frame()
 	{
 		((*frames)[curr_frame])->draw(*(objects[i]));
 	}
+	curr_frame++;
 }
 void	Animation::animate()
 {

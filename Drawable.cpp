@@ -1,5 +1,5 @@
 #include "Drawable.hpp"
-
+#include <iostream>
 Drawable::Drawable(): Magick::DrawableCompositeImage(0, 0, Magick::Image())
 {
 
